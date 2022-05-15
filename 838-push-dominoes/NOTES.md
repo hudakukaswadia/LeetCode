@@ -1,12 +1,25 @@
+- If there are 2 dominoes leaning towards each other, it will get stuck because one isn’t going to fall over because they are both pushing towards each other.
+- Anything that starts as a R or L state → won’t change its state at all
+- We will try a Brute Force/Simulation solution
+- Point to look here is that the dominoes which are straight up are not going to knock each other over
+- Hence only the dominoes that are left or right could knock other dominoes over so these are the ones I should pay attention to
+- With each second → we are going to have a queue of dominoes that we are going to look at
+- So first we will start with the left one → it is leaning to the left hence it will fall over to the left
+- So the first thing that we should ask ourselves is that is there anything to the left of it? Yes there is. Is that domino standing straight up. Yes it is.
+- What will happen? The left domino will knock over the domino which is standing still
+- Now we will pop the left domino from our queue so we won’t have to look at it again and it will obviously not knock over any different domino
+- What if the order was R S L? In this case the S(Straight) domino wouldn’t be changed as there is a domino pushing it to the left and there is a domino pushing to the right hence it will stand straight
+- If we do get any dominoes that are leaning to the right → we don’t know for sure that there isn’t a left domino to the right of it that could make the one in the middle stand straight up
+- Now when we look at the RIGHT domino, we should also look at the domino one space over and confirm that this is not a left domino
 - Now this entire iteration was one second
 - But how do we know that we have reached the end?
 - When our queue is empty → because right now we have a bunch of new dominoes that were just tipped over
 - Now either these dominoes are stuck together or they have been knocked over to being flat
 - Time complexity: $O(n)$  because in the worst case → every single domino could be added to the queue and then popped from the queue
 - Space complexity: $O(n)$  because our queue will potentially contain every single domino that was given to us in the input
-​
+
 ## Coding Explanation:
-​
+
 - So the dominoes are actually given to us in a string and it will be helpful for us to covert that into a list and the main reasoning is that as we will be updating the dominoes and you can’t really update a character in a string in python
 - In python, you can use a double ended queue using deque
 - So firstly, i will enumerate through all the dominoes so our list of dominoes and we will get the index and the domino
@@ -27,3 +40,33 @@
 - And if that’s the case → then we can’t knock this domino over that means it is stuck
 - In that case → we should pop from the queue one more time
 - And the reason we are doing the above is that if we don’t pop this domino that’s leaning to the left then it means on the next iteration → we are going to visit that domino again and our code will run and then the first if statement will run → and then the left domino will knock over the standing straight domino even though it shouldn’t because the straight domino is in between 2 dominoes i.e. a right domino and a left domino hence it is stuck
+- If there isn’t a left domino, one space to the right domino then we will do the generic thing i.e. tip the straight domino over to the right and then append it to the queue
+
+```
+class Solution:
+    def pushDominoes(self, dominoes: str) -> str:
+        dom = list(dominoes)
+        q = deque()
+        
+        for i, d in enumerate(dom):
+            if d != ".":
+                q.append((i, d))
+                
+        while q:
+            i, d = q.popleft()
+            
+            if d == "L":
+                if i > 0 and dom[i - 1] == ".":
+                    q.append((i - 1, "L"))
+                    dom[i - 1] = "L"
+                    
+            elif d == "R":
+                if i + 1 < len(dom) and dom[i + 1] == ".":
+                    if i + 2 < len(dom) and dom[i + 2] == "L":
+                        q.popleft()
+                    else:
+                        q.append((i + 1, "R"))
+                        dom[i + 1] = "R"
+                        
+        return "".join(dom)
+```
