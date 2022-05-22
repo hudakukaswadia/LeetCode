@@ -11,13 +11,36 @@
 - So we are asking from index 0 → how long does it take to get to index 3, then from index 1 → how long does it take to get to index 3, then from index 2 → how long does it take to get to index 3
 - Space complexity: $O(n)$
 - If we take the idea of caching the recursive solution then we can actually get an iterative solution and will have the same time and memory complexity
-​
+
 ## Iterative Solution - Dynamic Programming
-​
+
 - This solution will have a slightly better memory complexity because we can actually use the input array itself that we are given and then we can use 2 single variables to do the DP solution
 - Every cell in the array has a dependency on the solution of the next cell
 - So we will actually solve the problems from right to left instead of left to right which means that we will solve the sub problems first and then the original problem
 - So we will start solving from index 2 which is number 20 and it will have 2 choices:
-1. 1 jump → cost will be 20
-2. 2 jumps → but it won’t do anything as it will go out of bounds
-def minCostClimbingStairs(self, cost: List[int]) -> int:
+    1. 1 jump → cost will be 20
+    2. 2 jumps → but it won’t do anything as it will go out of bounds 
+- Do the above from each position
+- Time complexity: $O(n)$  because we just iterated through the array in reverse
+- Memory complexity: $O(1)$  because we are using the input array itself and are not storing anything
+
+## Coding Explanation:
+
+- So we will first start by adding a 0 at the end of the input array
+- Then we will start by iterating through this array in reverse order and we will be starting at the second last index as we have to look at the next 2 values that come after it
+- We will do the length of the array minus 3, we will keep going all the way until we reach the beginning of the array and we will decrement by 1 each time
+- What we want to do is that for cost at index i → what we want to assign this to is really the minimum of cost of index i plus (cost of index i + 1)
+- So the above is if we make a single jump. Now the second choice is if we make a double jump and we do cost of index i plus 2
+- return the minimum of the first 2 values of cost of i so cost of 0 and cost of index 1
+
+```
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        
+        cost.append(0)
+        
+        for i in range(len(cost) -3, -1, -1):
+            cost[i] = min(cost[i] + cost[i + 1], cost[i] + cost[i + 2])
+            
+        return min(cost[0], cost[1])
+```
