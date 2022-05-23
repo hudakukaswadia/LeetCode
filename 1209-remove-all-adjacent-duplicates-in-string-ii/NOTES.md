@@ -9,9 +9,9 @@
 - pushing to a stack is: $O(1)$
 - In the worst case: we are adding every single character to the stack and removing every single character from the stack so that would be $O(n)$ to add every character plus $O(n)$  to remove every character so the overall time complexity is $O(2n)$ which is still $O(n)$
 - Space: $O(n)$ because we are using stack as extra space
-​
+
 ## Coding Explanation:
-​
+
 - I am using a stack and i will use a pair of values that will be a character and the count
 - Then I will iterating through every single character in the string from the left to right because it doesn’t matter what order we go in
 - And we will check if the stack is non-empty and the top of the stack and we are looking at first of the pair as we are looking at the character and we will check if that’s equal to the current character that we are at
@@ -27,3 +27,24 @@
 - And the easiest way to do that is to iterate through our stack so basically the pair of values in the stack
 - Then we will append to the result → this character and then we want to make this many copies of that character
 - return result string
+
+```
+class Solution:
+    def removeDuplicates(self, s: str, k: int) -> str:
+        stack = []
+        
+        for c in s:
+            if stack and stack[-1][0] == c:
+                stack[-1][1] += 1
+            else:
+                stack.append([c, 1])
+                
+            if stack[-1][1] == k:
+                stack.pop()
+                
+        res = ""
+        for char, count in stack:
+            res += (char * count)
+            
+*         return res
+```
