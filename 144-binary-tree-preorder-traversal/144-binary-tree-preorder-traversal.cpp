@@ -9,30 +9,24 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
+// Recursive
+
 class Solution {
 public:
-    vector<int> preorderTraversal(TreeNode* root) {
-        vector<int> preOrder;
+    void preOrder(TreeNode* root, vector<int> &res) {
         if (root == NULL) {
-            return preOrder;
+            return;
         }
         
-        stack<TreeNode*> s;
-        s.push(root);
-        
-        while (!s.empty()) {
-            TreeNode* topNode = s.top();
-            preOrder.push_back(topNode -> val);
-            s.pop();
-            if (topNode -> right != NULL) {
-                s.push(topNode -> right);
-            }
-            
-            if(topNode -> left != NULL) {
-                s.push(topNode -> left);
-            }
-        }
-        return preOrder;
+        res.push_back(root -> val);
+        preOrder(root -> left, res);
+        preOrder(root -> right, res);    
+    }
+    
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> res;
+        preOrder(root, res);
+        return res;
     }            
-
 };
