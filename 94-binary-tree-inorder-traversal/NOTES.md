@@ -29,3 +29,7 @@ return inorder;
 ```
 ​
 ## Recursive Inorder Traversal
+​
+```
+​
+```
