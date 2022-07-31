@@ -13,6 +13,10 @@
  *     }
  * }
  */
+
+// Time Complexity: O(N)
+// Space Complexity: O(N)
+
 class Solution {
     public int diameterOfBinaryTree(TreeNode root) {
         int[] diameter = new int[1];
