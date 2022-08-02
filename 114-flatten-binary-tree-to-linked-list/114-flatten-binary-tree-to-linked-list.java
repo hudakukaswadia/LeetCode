@@ -18,31 +18,22 @@
 // Space Compelexity: O(N)
 
 class Solution {
-    TreeNode prev = null;
     public void flatten(TreeNode root) {
         
-        if (root == null) {
-            return;
-        }
-        
-        Stack<TreeNode> st = new Stack<>();
-        st.push(root);
-        
-        while (!st.isEmpty()) {
-            TreeNode cur = st.peek();
-            st.pop();
-            
-            if (cur.right != null) {
-                st.push(cur.right);
-            }
-            
+        TreeNode cur = root;
+        while (cur != null) {
             if (cur.left != null) {
-                st.push(cur.left);
+                TreeNode prev = cur.left;
+                
+                while (prev.right != null) {
+                    prev = prev.right;
+                }
+                
+                prev.right = cur.right;
+                cur.right = cur.left;
+                cur.left = null;
             }
-            if (!st.isEmpty()) {
-                cur.right = st.peek();
-            }
-            cur.left = null;
+            cur = cur.right;
         }
     }
 }
