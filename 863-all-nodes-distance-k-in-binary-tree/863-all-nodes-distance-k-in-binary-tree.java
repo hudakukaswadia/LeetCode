@@ -7,16 +7,23 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
+
+// Time Complexity: O(N)
+// Space Complexity: O(N)
+
 class Solution {
     private void markParents(TreeNode root, Map<TreeNode, TreeNode> parent_track, TreeNode target) {
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         queue.offer(root);
+        
         while(!queue.isEmpty()) {
             TreeNode current = queue.poll();
+            
             if (current.left != null) {
                 parent_track.put(current.left, current);
                 queue.offer(current.left);
             }
+            
             if (current.right != null) {
                 parent_track.put(current.right, current);
                 queue.offer(current.right);
@@ -32,14 +39,19 @@ class Solution {
         queue.offer(target);
         visited.put(target, true);
         int curr_level = 0;
+        
         while(!queue.isEmpty()) { /*Second BFS to go upto K level from target node and using our hashtable info */
             int size = queue.size();
+            
             if (curr_level == k) {
                 break;
             }
+            
             curr_level++;
+            
             for (int i = 0; i < size; i++) {
                 TreeNode current = queue.poll();
+                
                 if (current.left != null && visited.get(current.left) == null) {
                     queue.offer(current.left);
                     visited.put(current.left, true);
@@ -65,31 +77,3 @@ class Solution {
         return result;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
