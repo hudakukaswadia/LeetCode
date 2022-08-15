@@ -14,23 +14,37 @@
  * }
  */
 
-// Time complexity: O(N)
-// Space complexity: O(N)
+// Time Complexity: O(N)
+// Space Complexity: O(1)
 
 class Solution {
-    public static void inOrder(TreeNode root, ArrayList<Integer> res) {
-        if (root == null) {
-            return;
-        }
-        
-        inOrder(root.left, res);
-        res.add(root.val);
-        inOrder(root.right, res);
-    }
-    
     public List<Integer> inorderTraversal(TreeNode root) {
-        ArrayList<Integer> res = new ArrayList<>();
-        inOrder(root, res);
-        return res;
+        List<Integer> inorder = new ArrayList<Integer>();
+        
+        TreeNode cur = root;
+        while (cur != null) {
+            if (cur.left == null) {
+                inorder.add(cur.val);
+                cur = cur.right;
+            }
+            else {
+                TreeNode prev = cur.left;
+                while (prev.right != null && prev.right != cur) {
+                    prev = prev.right;
+                }
+                
+                if (prev.right == null) {
+                    prev.right = cur;
+                    cur = cur.left;
+                }
+                else {
+                    prev.right = null;
+                    inorder.add(cur.val);
+                    cur = cur.right;
+                }
+            }
+        }
+        return inorder;
+
     }
 }
